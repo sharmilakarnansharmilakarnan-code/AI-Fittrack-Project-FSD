@@ -1,0 +1,40 @@
+{
+  "name": "ai-fittrack-server",
+  "version": "1.0.0",
+  "description": "AI FitTrack - Personalized Fitness Tracking & AI Recommendation System (Backend REST API)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "create-admin": "node scripts/createAdmin.js",
+    "test": "node --test",
+    "test:api": "node --test tests/api.integration.js"
+  },
+  "keywords": [
+    "fitness",
+    "tracker",
+    "express",
+    "mongodb",
+    "jwt",
+    "gemini",
+    "ai"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.23.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

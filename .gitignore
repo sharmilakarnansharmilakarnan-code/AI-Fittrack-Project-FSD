@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Secrets - never commit real environment files (the .env.example files are safe to commit)
+.env
+.env.*
+!.env.example
+
+# Build output / logs / OS files
+dist/
+build/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

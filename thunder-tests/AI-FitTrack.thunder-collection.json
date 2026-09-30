@@ -1,0 +1,2554 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "AI-FitTrack",
+  "collectionId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+  "dateExported": "2026-09-20T09:00:00.000Z",
+  "version": "1.2",
+  "folders": [
+    {
+      "_id": "3c441e78-c926-40c1-b68a-abb78da4c8da",
+      "name": "PHASE 1 - SERVER",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 10000
+    },
+    {
+      "_id": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "PHASE 2 - AUTH AND PROFILE",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 20000
+    },
+    {
+      "_id": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "PHASE 3 - WORKOUTS",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 30000
+    },
+    {
+      "_id": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "PHASE 4 - GOALS",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 40000
+    },
+    {
+      "_id": "3650fbf2-c34e-4af0-b1b8-a8f159d833cd",
+      "name": "PHASE 5 - PROGRESS",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 50000
+    },
+    {
+      "_id": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "PHASE 6 - ATTENDANCE",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 60000
+    },
+    {
+      "_id": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "PHASE 7 - AI RECOMMENDATION",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 70000
+    },
+    {
+      "_id": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "PHASE 8 - ADMIN",
+      "containerId": "",
+      "created": "2026-09-20T09:00:00.000Z",
+      "sortNum": 80000
+    }
+  ],
+  "requests": [
+    {
+      "_id": "4b1ec541-e69f-48ad-9e38-112d89355287",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "3c441e78-c926-40c1-b68a-abb78da4c8da",
+      "name": "1. Health check",
+      "url": "{{baseUrl}}/api/health",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.server",
+          "action": "equal",
+          "value": "running"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.database",
+          "action": "equal",
+          "value": "connected"
+        }
+      ]
+    },
+    {
+      "_id": "d5b1bd45-c01b-46d1-8d76-7d5c999ca6a9",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "3c441e78-c926-40c1-b68a-abb78da4c8da",
+      "name": "1a. NEG: unknown route",
+      "url": "{{baseUrl}}/api/does-not-exist",
+      "method": "GET",
+      "sortNum": 20000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "404"
+        }
+      ]
+    },
+    {
+      "_id": "815aff95-184d-4d8a-9cd4-805b490bf659",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "2. Register user (Rahul)",
+      "url": "{{baseUrl}}/api/auth/register",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.user.role",
+          "action": "equal",
+          "value": "user"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.user.id",
+          "action": "setto",
+          "value": "{{userId}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Rahul\",\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "39daac69-b9a7-402e-8e1e-12ec92fe6c7b",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "2a. NEG: duplicate registration",
+      "url": "{{baseUrl}}/api/auth/register",
+      "method": "POST",
+      "sortNum": 40000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "409"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Rahul\",\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "2d1490d2-8bdb-4fa2-811a-e18948375c5b",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "2b. NEG: invalid email",
+      "url": "{{baseUrl}}/api/auth/register",
+      "method": "POST",
+      "sortNum": 50000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Rahul Kumar\",\n  \"email\": \"not-an-email\",\n  \"password\": \"{{password}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "4196246a-df5e-4de0-9dd6-2c498c2cc33a",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "2c. NEG: invalid (short) password",
+      "url": "{{baseUrl}}/api/auth/register",
+      "method": "POST",
+      "sortNum": 60000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Rahul Kumar\",\n  \"email\": \"short@example.com\",\n  \"password\": \"123\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "e043fc6c-50ca-437b-a96a-0661f9113457",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "2d. Register user 2 (Priya) - tries role=admin, must stay 'user'",
+      "url": "{{baseUrl}}/api/auth/register",
+      "method": "POST",
+      "sortNum": 70000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.user.role",
+          "action": "equal",
+          "value": "user"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.user.id",
+          "action": "setto",
+          "value": "{{user2Id}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Priya\",\n  \"email\": \"{{user2Email}}\",\n  \"password\": \"{{password}}\",\n  \"role\": \"admin\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "a01069ba-e67d-42e9-822d-419762649f44",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "3. Login user",
+      "url": "{{baseUrl}}/api/auth/login",
+      "method": "POST",
+      "sortNum": 80000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.token",
+          "action": "setto",
+          "value": "{{userToken}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "bcf00ac1-77b8-4111-96af-6822ecd7cb4e",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "3a. NEG: login with the wrong password",
+      "url": "{{baseUrl}}/api/auth/login",
+      "method": "POST",
+      "sortNum": 90000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"Wrong@123\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "e86b3226-a6c8-4cd1-994f-6fcf702a3857",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "3b. Login user 2",
+      "url": "{{baseUrl}}/api/auth/login",
+      "method": "POST",
+      "sortNum": 100000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.token",
+          "action": "setto",
+          "value": "{{user2Token}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"{{user2Email}}\",\n  \"password\": \"{{password}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "402c04c8-2533-4e5c-8257-388398ca5453",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "3c. Login ADMIN (created with npm run create-admin)",
+      "url": "{{baseUrl}}/api/auth/login",
+      "method": "POST",
+      "sortNum": 110000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.user.role",
+          "action": "equal",
+          "value": "admin"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.token",
+          "action": "setto",
+          "value": "{{adminToken}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "17aad9fa-71fd-4fe5-a9ca-cb10f57a5aa3",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "3d. Admin profile (saves the admin id)",
+      "url": "{{baseUrl}}/api/auth/profile",
+      "method": "GET",
+      "sortNum": 120000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.user.id",
+          "action": "setto",
+          "value": "{{adminId}}"
+        }
+      ]
+    },
+    {
+      "_id": "0dd419d9-90dd-40f4-add4-1a62d8824b66",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "4. Get profile",
+      "url": "{{baseUrl}}/api/auth/profile",
+      "method": "GET",
+      "sortNum": 130000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.user.role",
+          "action": "equal",
+          "value": "user"
+        }
+      ]
+    },
+    {
+      "_id": "819b8309-3a80-47a9-a126-7f91a98c57cc",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "4a. NEG: profile without JWT (protected route)",
+      "url": "{{baseUrl}}/api/auth/profile",
+      "method": "GET",
+      "sortNum": 140000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ]
+    },
+    {
+      "_id": "39394229-37b8-4c32-92cb-f24d17bc9349",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "4b. NEG: profile with an invalid JWT",
+      "url": "{{baseUrl}}/api/auth/profile",
+      "method": "GET",
+      "sortNum": 150000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer invalid.jwt.value"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ]
+    },
+    {
+      "_id": "bd48bda3-1d1d-4909-b3a6-c151ec4270f1",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "4c. Update fitness profile (role in the body is ignored)",
+      "url": "{{baseUrl}}/api/auth/profile",
+      "method": "PUT",
+      "sortNum": 160000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.user.role",
+          "action": "equal",
+          "value": "user"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.user.fitnessProfile.experienceLevel",
+          "action": "equal",
+          "value": "Intermediate"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"age\": 28,\n  \"heightCm\": 172,\n  \"weightKg\": 68.5,\n  \"experienceLevel\": \"intermediate\",\n  \"fitnessGoal\": \"Build endurance\",\n  \"role\": \"admin\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "f209c165-dd09-4c62-9d45-d122192e4e29",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a40857a4-842d-4ddd-866b-bbc927847a7e",
+      "name": "4d. NEG: invalid age",
+      "url": "{{baseUrl}}/api/auth/profile",
+      "method": "PUT",
+      "sortNum": 170000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"age\": 5\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "d6492c75-6883-4d19-9466-56ee77a894e7",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "5. Create workout",
+      "url": "{{baseUrl}}/api/workouts",
+      "method": "POST",
+      "sortNum": 180000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.workout._id",
+          "action": "setto",
+          "value": "{{workoutId}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"workoutName\": \"Morning Running\",\n  \"category\": \"Cardio\",\n  \"duration\": 30,\n  \"caloriesBurned\": 250,\n  \"workoutDate\": \"{{workoutDate}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "d94a6fe5-b428-4ff9-ac41-b04ed8c74839",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "5a. NEG: invalid workout (duration 0)",
+      "url": "{{baseUrl}}/api/workouts",
+      "method": "POST",
+      "sortNum": 190000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"workoutName\": \"Bad\",\n  \"category\": \"Cardio\",\n  \"duration\": 0,\n  \"caloriesBurned\": 10,\n  \"workoutDate\": \"{{workoutDate}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "73c64704-b99a-402c-98e3-930fd1916c08",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "5b. NEG: invalid category",
+      "url": "{{baseUrl}}/api/workouts",
+      "method": "POST",
+      "sortNum": 200000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"workoutName\": \"Bad\",\n  \"category\": \"Zumba\",\n  \"duration\": 10,\n  \"caloriesBurned\": 10,\n  \"workoutDate\": \"{{workoutDate}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "e961e8a6-b8e4-46a0-8b8e-7fd7db88a5f9",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "6. Get workouts",
+      "url": "{{baseUrl}}/api/workouts",
+      "method": "GET",
+      "sortNum": 210000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "653c1f58-73f8-4293-992d-5deae6d69631",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "7. Get workout by ID",
+      "url": "{{baseUrl}}/api/workouts/{{workoutId}}",
+      "method": "GET",
+      "sortNum": 220000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "29523886-377c-4409-8eb1-6085056c83e5",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "7a. NEG: another user's workout",
+      "url": "{{baseUrl}}/api/workouts/{{workoutId}}",
+      "method": "GET",
+      "sortNum": 230000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{user2Token}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ]
+    },
+    {
+      "_id": "5a620d92-303e-497b-9c68-e5044565afad",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "7b. NEG: invalid ObjectId",
+      "url": "{{baseUrl}}/api/workouts/not-an-id",
+      "method": "GET",
+      "sortNum": 240000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ]
+    },
+    {
+      "_id": "6083fde1-5f17-4ccb-96fe-064b9438b96e",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "7c. NEG: unknown workout id",
+      "url": "{{baseUrl}}/api/workouts/64b7f0c2a1b2c3d4e5f60718",
+      "method": "GET",
+      "sortNum": 250000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "404"
+        }
+      ]
+    },
+    {
+      "_id": "00f59bb3-1d40-44de-b7f9-a57b6c6b9fd5",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "8. Search workout by name",
+      "url": "{{baseUrl}}/api/workouts/search?query=running",
+      "method": "GET",
+      "sortNum": 260000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "b38526ef-e607-4812-aed3-4761e4b7e4ed",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "8a. Search workout by category",
+      "url": "{{baseUrl}}/api/workouts/search?category=cardio",
+      "method": "GET",
+      "sortNum": 270000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "5f44f5af-90b2-4c02-96fb-7eb3f529ef94",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "8b. Search workout by date",
+      "url": "{{baseUrl}}/api/workouts/search?date={{workoutDate}}",
+      "method": "GET",
+      "sortNum": 280000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "4304af01-ca71-42ce-afa0-17e9cb11d18c",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "9. Update workout",
+      "url": "{{baseUrl}}/api/workouts/{{workoutId}}",
+      "method": "PUT",
+      "sortNum": 290000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"duration\": 40,\n  \"caloriesBurned\": 300\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "384eda0f-2d3c-469e-94d0-8bf87aef1a5f",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "9a. NEG: another user updates the workout",
+      "url": "{{baseUrl}}/api/workouts/{{workoutId}}",
+      "method": "PUT",
+      "sortNum": 300000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{user2Token}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"duration\": 5\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "30274134-4ca3-445b-b72f-d9108f4bc92b",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "10. Delete workout",
+      "url": "{{baseUrl}}/api/workouts/{{workoutId}}",
+      "method": "DELETE",
+      "sortNum": 310000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "c5e36a11-88fe-4b54-a7c4-18f0f359e884",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "10a. NEG: deleted workout -> 404",
+      "url": "{{baseUrl}}/api/workouts/{{workoutId}}",
+      "method": "GET",
+      "sortNum": 320000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "404"
+        }
+      ]
+    },
+    {
+      "_id": "db9d6194-46e1-465c-b9b2-e79ea9708f44",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "10b. Create workout 1 (for progress / AI)",
+      "url": "{{baseUrl}}/api/workouts",
+      "method": "POST",
+      "sortNum": 330000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"workoutName\": \"Morning Run\",\n  \"category\": \"Cardio\",\n  \"duration\": 30,\n  \"caloriesBurned\": 250,\n  \"workoutDate\": \"{{workoutDate}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "88cc1b18-67be-4588-84f8-9a507ee62904",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "2325ccd1-7a05-4a55-b0e2-35ad99b032e2",
+      "name": "10c. Create workout 2 (for progress / AI)",
+      "url": "{{baseUrl}}/api/workouts",
+      "method": "POST",
+      "sortNum": 340000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"workoutName\": \"Evening Strength\",\n  \"category\": \"Strength\",\n  \"duration\": 45,\n  \"caloriesBurned\": 320,\n  \"workoutDate\": \"{{workoutDate}}\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "d8f3b000-34be-49de-9409-9344bfe47405",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "11. Create goal (manual; `progress` in the body is ignored)",
+      "url": "{{baseUrl}}/api/goals",
+      "method": "POST",
+      "sortNum": 350000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.goal.progress",
+          "action": "equal",
+          "value": "30"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.goal.status",
+          "action": "equal",
+          "value": "active"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.data.goal._id",
+          "action": "setto",
+          "value": "{{goalId}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"title\": \"Run 10 times\",\n  \"targetValue\": 10,\n  \"currentValue\": 3,\n  \"unit\": \"runs\",\n  \"targetDate\": \"2040-12-31\",\n  \"progress\": 100\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "991b1b22-5e3e-475d-8e83-0099465222d0",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "11a. Create goal calculated from your workouts",
+      "url": "{{baseUrl}}/api/goals",
+      "method": "POST",
+      "sortNum": 360000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.goal.status",
+          "action": "equal",
+          "value": "completed"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"title\": \"Log 2 workouts\",\n  \"metric\": \"workouts\",\n  \"targetValue\": 2,\n  \"startDate\": \"2020-01-01\",\n  \"targetDate\": \"2040-12-31\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "0e34c926-4ef1-4dd9-b882-2cc867ffba7b",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "11b. NEG: targetValue 0",
+      "url": "{{baseUrl}}/api/goals",
+      "method": "POST",
+      "sortNum": 370000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"title\": \"Bad goal\",\n  \"targetValue\": 0,\n  \"targetDate\": \"2040-12-31\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "26ca969c-320f-4212-bf5e-9bf0dd826587",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "12. Get goals",
+      "url": "{{baseUrl}}/api/goals",
+      "method": "GET",
+      "sortNum": 380000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "f299df69-04db-4075-b409-3c8950388bf2",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "12a. Get goal by ID",
+      "url": "{{baseUrl}}/api/goals/{{goalId}}",
+      "method": "GET",
+      "sortNum": 390000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "90b1e526-5f69-4b6b-b766-ca6ff99e97f3",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "12b. NEG: another user reads the goal",
+      "url": "{{baseUrl}}/api/goals/{{goalId}}",
+      "method": "GET",
+      "sortNum": 400000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{user2Token}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ]
+    },
+    {
+      "_id": "ead93504-0284-4d16-9b30-7def8fdc6150",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "13. Update goal progress (currentValue 5 -> 50%)",
+      "url": "{{baseUrl}}/api/goals/{{goalId}}",
+      "method": "PUT",
+      "sortNum": 410000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.goal.progress",
+          "action": "equal",
+          "value": "50"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"currentValue\": 5\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "c4af2fb3-9369-4002-8dc7-0abaea77d19f",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "13a. NEG: client tries to set status 'completed'",
+      "url": "{{baseUrl}}/api/goals/{{goalId}}",
+      "method": "PUT",
+      "sortNum": 420000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"status\": \"completed\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "1ab1c9ca-1dfd-4664-88d5-efdf75ad904d",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "13b. NEG: another user edits the goal",
+      "url": "{{baseUrl}}/api/goals/{{goalId}}",
+      "method": "PUT",
+      "sortNum": 430000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{user2Token}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"title\": \"hijack\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "aab18fe1-423b-480e-bfb0-db0fa3383485",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "14. Delete goal",
+      "url": "{{baseUrl}}/api/goals/{{goalId}}",
+      "method": "DELETE",
+      "sortNum": 440000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "d1905e9f-da5e-49b7-a93b-6b87705e9e33",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "1cad8a54-a9a4-4af9-87f9-82f3f7c4702a",
+      "name": "14a. NEG: deleted goal -> 404",
+      "url": "{{baseUrl}}/api/goals/{{goalId}}",
+      "method": "GET",
+      "sortNum": 450000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "404"
+        }
+      ]
+    },
+    {
+      "_id": "e087b0ce-019e-49bb-8b00-48ef20b1e2e0",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "3650fbf2-c34e-4af0-b1b8-a8f159d833cd",
+      "name": "15. Progress summary",
+      "url": "{{baseUrl}}/api/progress/summary",
+      "method": "GET",
+      "sortNum": 460000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.summary.totals.workouts",
+          "action": "equal",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "_id": "af43719e-5475-4274-9f93-68e88c3f6601",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "3650fbf2-c34e-4af0-b1b8-a8f159d833cd",
+      "name": "16. Weekly progress",
+      "url": "{{baseUrl}}/api/progress/weekly?weeks=4",
+      "method": "GET",
+      "sortNum": 470000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "c75d7a46-e716-4f10-a85e-65d7419664eb",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "3650fbf2-c34e-4af0-b1b8-a8f159d833cd",
+      "name": "16a. NEG: weeks=0",
+      "url": "{{baseUrl}}/api/progress/weekly?weeks=0",
+      "method": "GET",
+      "sortNum": 480000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ]
+    },
+    {
+      "_id": "7b8cd754-1f8c-4a2b-aff5-d11a3e1f463c",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "3650fbf2-c34e-4af0-b1b8-a8f159d833cd",
+      "name": "16b. NEG: progress without JWT",
+      "url": "{{baseUrl}}/api/progress/summary",
+      "method": "GET",
+      "sortNum": 490000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ]
+    },
+    {
+      "_id": "81cc2d6a-38c1-4088-8099-72c4529865d6",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "17. NEG: check out while not checked in",
+      "url": "{{baseUrl}}/api/attendance/check-out",
+      "method": "POST",
+      "sortNum": 500000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "409"
+        }
+      ]
+    },
+    {
+      "_id": "62ca0a88-3ad0-4a9f-86d9-162ad51cf36a",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "17a. Check in",
+      "url": "{{baseUrl}}/api/attendance/check-in",
+      "method": "POST",
+      "sortNum": 510000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.attendance.isOpen",
+          "action": "equal",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "_id": "d04f362a-3fef-4a4d-bc2f-b43226b09372",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "17b. NEG: check in again (already checked in)",
+      "url": "{{baseUrl}}/api/attendance/check-in",
+      "method": "POST",
+      "sortNum": 520000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "409"
+        }
+      ]
+    },
+    {
+      "_id": "4c48e7e9-5217-4565-9bd1-296883bdf3a2",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "18. Attendance history (shows the open visit)",
+      "url": "{{baseUrl}}/api/attendance",
+      "method": "GET",
+      "sortNum": 530000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "e6cc4c5c-c0aa-4c1c-a9b2-9f6fbf033fb0",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "18a. Check out",
+      "url": "{{baseUrl}}/api/attendance/check-out",
+      "method": "POST",
+      "sortNum": 540000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.attendance.isOpen",
+          "action": "equal",
+          "value": "false"
+        }
+      ]
+    },
+    {
+      "_id": "b8811f1b-525d-4f1f-9574-40d789fc062f",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "18b. NEG: attendance without JWT",
+      "url": "{{baseUrl}}/api/attendance",
+      "method": "GET",
+      "sortNum": 550000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ]
+    },
+    {
+      "_id": "c71b3d05-0b77-47fe-bebc-aa250b88f0d9",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "a4df0160-5e39-4ecc-9cdb-a8eb502001c5",
+      "name": "18c. Progress now counts the gym visit",
+      "url": "{{baseUrl}}/api/progress/summary",
+      "method": "GET",
+      "sortNum": 560000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.summary.attendance.visitsLast30Days",
+          "action": "equal",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "_id": "79e73bfe-c8c0-493f-b867-54e68dfc530d",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19. AI recommendation (uses your saved profile, goals, workouts and progress)",
+      "url": "{{baseUrl}}/api/ai/recommendation",
+      "method": "POST",
+      "sortNum": 570000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{}",
+        "form": []
+      }
+    },
+    {
+      "_id": "0c4f8e0b-198e-43af-9dd2-a2bfbf2c8bc8",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19a. AI recommendation with values in the body",
+      "url": "{{baseUrl}}/api/ai/recommendation",
+      "method": "POST",
+      "sortNum": 580000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"age\": 22,\n  \"fitnessGoal\": \"Weight Loss\",\n  \"experienceLevel\": \"Beginner\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "564711ef-9250-4b0e-9269-49bf909691ba",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19b. NEG: invalid age",
+      "url": "{{baseUrl}}/api/ai/recommendation",
+      "method": "POST",
+      "sortNum": 590000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"age\": 5\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "09e07c48-222e-4ba4-b370-99477510acfd",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19c. NEG: user 2 has no fitness profile and sends nothing",
+      "url": "{{baseUrl}}/api/ai/recommendation",
+      "method": "POST",
+      "sortNum": 600000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{user2Token}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{}",
+        "form": []
+      }
+    },
+    {
+      "_id": "5d325a97-cb29-4861-9e50-7726a5058d4e",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19d. NEG: AI recommendation without JWT",
+      "url": "{{baseUrl}}/api/ai/recommendation",
+      "method": "POST",
+      "sortNum": 610000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{}",
+        "form": []
+      }
+    },
+    {
+      "_id": "a5dbc93f-0d5c-4766-997c-0d64468702c1",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19e. AI Fitness Insights (user with workouts)",
+      "url": "{{baseUrl}}/api/ai/fitness-insights",
+      "method": "GET",
+      "sortNum": 611000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "65b4e99b-4817-4c41-892b-e0687c433048",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19f. AI Fitness Insights: new user with zero workouts",
+      "url": "{{baseUrl}}/api/ai/fitness-insights",
+      "method": "GET",
+      "sortNum": 612000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{user2Token}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "aefea40e-1f53-46aa-9abb-8bed313e67a9",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "e54cff5c-d998-4c21-8b81-82419f283725",
+      "name": "19g. NEG: AI Fitness Insights without JWT",
+      "url": "{{baseUrl}}/api/ai/fitness-insights",
+      "method": "GET",
+      "sortNum": 613000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ]
+    },
+    {
+      "_id": "325c9620-af8a-4e9e-8b1f-d72c689048bc",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "20. Admin: system statistics",
+      "url": "{{baseUrl}}/api/admin/stats",
+      "method": "GET",
+      "sortNum": 620000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "1399a8f8-2593-45a6-99fd-9998a9b8b713",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "20a. NEG: normal user calls admin statistics",
+      "url": "{{baseUrl}}/api/admin/stats",
+      "method": "GET",
+      "sortNum": 630000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ]
+    },
+    {
+      "_id": "53ec505b-7f05-44ea-8bc0-9a9818453b6d",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "20b. NEG: admin statistics without JWT",
+      "url": "{{baseUrl}}/api/admin/stats",
+      "method": "GET",
+      "sortNum": 640000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "401"
+        }
+      ]
+    },
+    {
+      "_id": "c4f7cf19-096f-4139-bd03-781ab03bd896",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "21. Admin: list users (search by e-mail)",
+      "url": "{{baseUrl}}/api/admin/users?q=example.com",
+      "method": "GET",
+      "sortNum": 650000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "6cead94a-4c6b-4b77-9a90-8442074b5e02",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "21a. NEG: normal user lists users",
+      "url": "{{baseUrl}}/api/admin/users",
+      "method": "GET",
+      "sortNum": 660000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ]
+    },
+    {
+      "_id": "2e13a743-dc93-4710-9ba3-5b42e7096b63",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "22. Admin: get user with data counts",
+      "url": "{{baseUrl}}/api/admin/users/{{user2Id}}",
+      "method": "GET",
+      "sortNum": 670000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "ada3e8ed-e295-4c98-a639-1bb26ef62a1e",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "22a. NEG: unknown user",
+      "url": "{{baseUrl}}/api/admin/users/64b7f0c2a1b2c3d4e5f60718",
+      "method": "GET",
+      "sortNum": 680000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "404"
+        }
+      ]
+    },
+    {
+      "_id": "c8376c68-9d05-4df8-8bcc-4116e6cf7bbf",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "22b. NEG: invalid user id",
+      "url": "{{baseUrl}}/api/admin/users/xyz",
+      "method": "GET",
+      "sortNum": 690000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ]
+    },
+    {
+      "_id": "4ee8986d-2dcc-4401-8a9b-c6293e3e5919",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "23. Admin: make user 2 an admin",
+      "url": "{{baseUrl}}/api/admin/users/{{user2Id}}/role",
+      "method": "PUT",
+      "sortNum": 700000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "json-query",
+          "custom": "json.data.user.role",
+          "action": "equal",
+          "value": "admin"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"role\": \"admin\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "1bad31b7-00e5-461e-b5c9-c83ea80499ad",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "23a. User 2 can now call admin routes (role is read from the database)",
+      "url": "{{baseUrl}}/api/admin/stats",
+      "method": "GET",
+      "sortNum": 710000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{user2Token}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "6b5ab516-49b4-46d0-b27f-0edfaa00280f",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "23b. Admin: back to a normal user",
+      "url": "{{baseUrl}}/api/admin/users/{{user2Id}}/role",
+      "method": "PUT",
+      "sortNum": 720000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"role\": \"user\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "2c7f0c35-5555-45c7-a8ab-eda2b49b6162",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "23c. NEG: invalid role",
+      "url": "{{baseUrl}}/api/admin/users/{{user2Id}}/role",
+      "method": "PUT",
+      "sortNum": 730000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"role\": \"superuser\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "d31f20c7-b29d-45a2-887b-ab68d5408da5",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "23d. NEG: normal user changes a role",
+      "url": "{{baseUrl}}/api/admin/users/{{user2Id}}/role",
+      "method": "PUT",
+      "sortNum": 740000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"role\": \"admin\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "c3e662a0-975d-4f37-8883-6119d74063cf",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "23e. NEG: admin changes their own role",
+      "url": "{{baseUrl}}/api/admin/users/{{adminId}}/role",
+      "method": "PUT",
+      "sortNum": 750000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "400"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"role\": \"user\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "8322605b-6a79-47fc-9726-aa87bbeb71ab",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "24. Admin: delete user 2 (with their data)",
+      "url": "{{baseUrl}}/api/admin/users/{{user2Id}}",
+      "method": "DELETE",
+      "sortNum": 760000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "04256155-9f33-44f0-bf9c-c3028f0e132c",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "24a. NEG: deleted user -> 404",
+      "url": "{{baseUrl}}/api/admin/users/{{user2Id}}",
+      "method": "GET",
+      "sortNum": 770000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{adminToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "404"
+        }
+      ]
+    },
+    {
+      "_id": "146a2b07-2aa2-4ba7-8c0d-29ec6422c65d",
+      "colId": "4ede0787-64f3-461e-972b-b61a03cc1b43",
+      "containerId": "099ac1ac-f60e-4d56-8418-97e72b40a45b",
+      "name": "24b. NEG: normal user deletes a user",
+      "url": "{{baseUrl}}/api/admin/users/{{userId}}",
+      "method": "DELETE",
+      "sortNum": 780000,
+      "created": "2026-09-20T09:00:00.000Z",
+      "modified": "2026-09-20T09:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{userToken}}"
+        }
+      ],
+      "params": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "403"
+        }
+      ]
+    }
+  ]
+}
